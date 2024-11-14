@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
     git \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
 # If you have specific PHP extensions required, you can install them here.
 # For example, if you need MySQL support:
