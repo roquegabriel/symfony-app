@@ -18,22 +18,18 @@ RUN apt-get update && apt-get install -y \
     git \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN composer install \
-    --no-interaction \
-    --no-plugins \
-    --no-scripts \
-    --no-dev \
-    --prefer-dist
 
 # If you have specific PHP extensions required, you can install them here.
 # For example, if you need MySQL support:
 # RUN docker-php-ext-install pdo_mysql 
 
 # Adding Postgres support:
-RUN docker-php-ext-install pdo_pgsql
+# RUN docker-php-ext-install pdo_pgsql
 
 # Copy custom Apache configuration
 COPY apache.conf /etc/apache2/sites-available/000-default.conf
+
+COPY ./entrypoint.sh /entrypoint.sh
 
 # Enable Apache modules
 RUN a2enmod rewrite
@@ -48,5 +44,9 @@ RUN a2enmod rewrite
 # Expose port 80 to allow incoming connections to the container
 EXPOSE 80
 
+RUN chmod +x /entrypoint.sh
+
 # By default, Apache is started automatically. You can change or customize the startup command if necessary.
 CMD ["apache2-foreground"]
+
+ENTRYPOINT ["/entrypoint.sh"]
