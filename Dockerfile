@@ -20,16 +20,6 @@ RUN apt-get update && apt-get install -y \
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-RUN set -eux; \
-	mkdir -p var/cache var/log; \
-	composer dump-autoload --classmap-authoritative --no-dev; \
-	composer dump-env prod; \
-	composer run-script --no-dev post-install-cmd; \
-	php bin/console tailwind:build --minify; \
-	php bin/console asset-map:compile; \
-        rm -rf assets/; \
-	chmod +x bin/console; sync;
-
 # If you have specific PHP extensions required, you can install them here.
 # For example, if you need MySQL support:
 # RUN docker-php-ext-install pdo_mysql 
